@@ -6,7 +6,10 @@ class Articles extends Component {
   };
 
   componentDidMount() {
-    this.setState({ articlesList: this.props.articles });
+    const sortedList = this.props.articles
+      .slice()
+      .sort((a, b) => b.upvotes - a.upvotes);
+    this.setState({ articlesList: sortedList });
   }
 
   sortByMostUpvoted = () => {
@@ -19,15 +22,14 @@ class Articles extends Component {
   sortByMostRecent = () => {
     const sortedList = this.props.articles
       .slice()
-      .sort((a, b) => a.date - b.date);
-    console.log("sortedList", sortedList);
+      .sort((a, b) => b.date - a.date);
     this.setState({ articlesList: sortedList });
   };
 
   render() {
     const articles = this.state.articlesList.map((article) => {
       return (
-        <tr data-testid="article" key={article.title}>
+        <tr data-testid="article" key={article.date}>
           <td data-testid="article-title">{article.title}</td>
           <td data-testid="article-upvotes">{article.upvotes}</td>
           <td data-testid="article-date">{article.date}</td>
